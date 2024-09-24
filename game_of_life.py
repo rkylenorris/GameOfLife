@@ -2,15 +2,16 @@ class GameOfLife(object):
 
     def __init__(self, x_dim, y_dim):
         # Initialize a 2D list with dimensions x_dim by y_dim filled with zeros.
-        pass
+        self.grid = [[0] * x_dim for _ in range(y_dim)]
 
     def get_grid(self):
         # Implement a getter method for your grid.
-        pass
+        return self.grid
 
     def print_grid(self):
         # Implement a method to print out your grid in a human-readable format.
-        pass
+        for row in self.grid:
+            print(row)
 
     def populate_grid(self, coord):
         # Given a list of 2D coordinates (represented as tuples/lists with 2 elements each),
