@@ -12,6 +12,7 @@ def main():
     coords = [(1, 0), (5, 4)]
     game.populate_grid(coords)
     game.print_grid()
+    print(game.get_neighbors([0,0]))
 
 
 if __name__ == '__main__':

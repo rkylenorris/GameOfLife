@@ -26,7 +26,7 @@ class GameOfLife(object):
         # set the corresponding elements in your grid to 1.
         for co in coord:
             try:
-                self.grid[co[1]][co[0]] = 1
+                self.grid[co[0]][co[1]] = 1
             except IndexError as err:
                 print(err)
                 print(f'one of more coordinates is not valid for coordinate pair ({co[0]}, {co[1]})')
@@ -69,7 +69,7 @@ class GameOfLife(object):
     def dead_change(self, cell_coord: tuple[int, int], neighbor_vals: list[int]) -> None:
         # if dead cell has 3 live neighbors it becomes alive
         if sum(neighbor_vals) == 3:
-            self.grid[cell_coord[1]][cell_coord[0]] = 1
+            self.grid[cell_coord[0]][cell_coord[1]] = 1
 
     def live_change(self, cell_coord: tuple[int, int], neighbor_vals: list[int]) -> None:
         live_or_dead: int = 0
@@ -85,7 +85,7 @@ class GameOfLife(object):
             live_or_dead = 1
 
         # assign new value to cell coordinates
-        self.grid[cell_coord[1]][cell_coord[0]] = live_or_dead
+        self.grid[cell_coord[0]][cell_coord[1]] = live_or_dead
 
     def make_n_steps(self, n) -> None:
         # Implement a method that applies the make_step method n times.
