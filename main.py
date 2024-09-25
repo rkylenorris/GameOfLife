@@ -9,6 +9,8 @@ from game_of_life import GameOfLife
 
 def main():
     game: GameOfLife = GameOfLife(6, 5)
+    coords = [(1, 0), (5, 4)]
+    game.populate_grid(coords)
     game.print_grid()
 
 
