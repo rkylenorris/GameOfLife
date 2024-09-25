@@ -1,5 +1,5 @@
-from typing import List
-
+import matplotlib.pyplot as plt
+import numpy as np
 
 class GameOfLife(object):
 
@@ -93,6 +93,38 @@ class GameOfLife(object):
             self.make_step()
 
     def draw_grid(self):
-        # Draw the current state of the grid.
-        pass
+        # Draw the current state of the grid using matplotlib scatter.
+        live_coords = self.get_live()
+        dead_coords = self.get_dead()
+        y = np.array(live_coords[0])
+        x = np.array(live_coords[1])
+        plt.scatter(x, y, color='red', s=200)
+        y = np.array(dead_coords[0])
+        x = np.array(dead_coords[1])
+        plt.scatter(x, y, color='black', s=50)
+        plt.subplot().invert_yaxis()
+        plt.yticks(np.arange(y.min(), y.max() + 1, 1))
+        plt.show()
 
+
+    def get_live(self) -> list[list[int]]:
+        live_cells_x = []
+        live_cells_y = []
+        for i, row in enumerate(self.grid):
+            for j, cell in enumerate(row):
+                if cell == 1:
+                    live_cells_x.append(i)
+                    live_cells_y.append(j)
+
+        return [live_cells_x, live_cells_y]
+
+    def get_dead(self) -> list[list[int]]:
+        dead_cells_x = []
+        dead_cells_y = []
+        for i, row in enumerate(self.grid):
+            for j, cell in enumerate(row):
+                if cell == 0:
+                    dead_cells_x.append(i)
+                    dead_cells_y.append(j)
+
+        return [dead_cells_x, dead_cells_y]

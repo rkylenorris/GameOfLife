@@ -9,10 +9,10 @@ from game_of_life import GameOfLife
 
 def main():
     game: GameOfLife = GameOfLife(6, 5)
-    coords = [(1, 0), (5, 4)]
+    coords = [(1, 0), (5, 4), [3, 2], [4, 1], [0, 3]]
     game.populate_grid(coords)
     game.print_grid()
-    print(game.get_neighbors([0,0]))
+    game.draw_grid()
 
 
 if __name__ == '__main__':
