@@ -11,7 +11,9 @@ class GameOfLife(object):
     def print_grid(self):
         # Implement a method to print out your grid in a human-readable format.
         for row in self.grid:
-            print(row)
+            row_print = " | ".join(map(str, row))
+            print(row_print)
+            print("-" * len(row_print))
 
     def populate_grid(self, coord):
         # Given a list of 2D coordinates (represented as tuples/lists with 2 elements each),
