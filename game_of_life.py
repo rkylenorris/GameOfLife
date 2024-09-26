@@ -14,7 +14,7 @@ class GameOfLife(object):
         :param x_dim: int
         :param y_dim: int
         """
-        self.grid = [[0] * x_dim for _ in range(y_dim)]
+        self.grid = [[0] * y_dim for _ in range(x_dim)]
 
     def get_grid(self) -> list:
         """
@@ -48,7 +48,7 @@ class GameOfLife(object):
 
         for co in coord:
             try:
-                self.grid[co[0]][co[1]] = 1
+                self.grid[co[1]][co[0]] = 1
             except IndexError:
                 raise IndexError(f"Coordinate ({co[0]}, {co[1]}) out of range")
 
@@ -60,11 +60,11 @@ class GameOfLife(object):
         """
         for i, row in enumerate(self.grid):
             for j, cell in enumerate(row):
-                neighbors = self.get_neighbors([i, j])
+                neighbors = self.get_neighbors([j, i])
                 if cell == 0:
-                    self.dead_change((i, j), neighbors)
+                    self.dead_change((j, i), neighbors)
                 elif cell == 1:
-                    self.live_change((i, j), neighbors)
+                    self.live_change((j, i), neighbors)
 
     def get_neighbors(self, coord: list[int]) -> list[int]:
         """
@@ -83,7 +83,7 @@ class GameOfLife(object):
         cols = len(self.grid[0])
 
         for x, y in directions:
-            nx, ny = coord[0] + x, coord[1] + y
+            nx, ny = coord[1] + x, coord[0] + y
             # check that cell exists before getting value and appending
             # to neighbors array
             if 0 <= nx < rows and 0 <= ny < cols:
@@ -101,7 +101,7 @@ class GameOfLife(object):
         :return: None
         """
         if sum(neighbor_vals) == 3:
-            self.grid[cell_coord[0]][cell_coord[1]] = 1
+            self.grid[cell_coord[1]][cell_coord[0]] = 1
 
     def live_change(self, cell_coord: tuple[int, int], neighbor_vals: list[int]) -> None:
         """
@@ -128,7 +128,7 @@ class GameOfLife(object):
             live_or_dead = 1
 
         # assign new value to cell coordinates
-        self.grid[cell_coord[0]][cell_coord[1]] = live_or_dead
+        self.grid[cell_coord[1]][cell_coord[0]] = live_or_dead
 
     def make_n_steps(self, n) -> None:
         """
@@ -187,8 +187,8 @@ class GameOfLife(object):
         for i, row in enumerate(self.grid):
             for j, cell in enumerate(row):
                 if cell == 1:
-                    live_cells_x.append(i)
-                    live_cells_y.append(j)
+                    live_cells_x.append(j)
+                    live_cells_y.append(i)
 
         return [live_cells_x, live_cells_y]
 
@@ -203,7 +203,7 @@ class GameOfLife(object):
         for i, row in enumerate(self.grid):
             for j, cell in enumerate(row):
                 if cell == 0:
-                    dead_cells_x.append(i)
-                    dead_cells_y.append(j)
+                    dead_cells_x.append(j)
+                    dead_cells_y.append(i)
 
         return [dead_cells_x, dead_cells_y]
