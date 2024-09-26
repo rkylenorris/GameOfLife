@@ -12,7 +12,7 @@ def main():
     coords = [(14, 15), (15, 15), (16, 15), (15, 14), (16, 16), (14, 16), (15, 17)]
     game.populate_grid(coords)
     # game.draw_grid(0)
-    game.make_n_steps(25)
+    game.make_n_steps(15)
 
 
 if __name__ == '__main__':
