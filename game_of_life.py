@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
+
 class GameOfLife(object):
     """
     Class representing the game of life
@@ -14,7 +15,7 @@ class GameOfLife(object):
         :param x_dim: int
         :param y_dim: int
         """
-        self.grid = [[0] * y_dim for _ in range(x_dim)]
+        self.grid = [[0 for i in range(x_dim)]for _ in range(y_dim)]
 
     def get_grid(self) -> list:
         """
@@ -58,13 +59,20 @@ class GameOfLife(object):
 
         :return: None
         """
+
+        # creates copy of grid to assign new values to
+        # in order to avoid applying rules based on already changed cells
+        new_grid = [row[:] for row in self.grid]
+
         for i, row in enumerate(self.grid):
             for j, cell in enumerate(row):
                 neighbors = self.get_neighbors([i, j])
                 if cell == 0:
-                    self.dead_change((i, j), neighbors)
+                    self.dead_change((i, j), neighbors, new_grid)
                 elif cell == 1:
-                    self.live_change((i, j), neighbors)
+                    self.live_change((i, j), neighbors, new_grid)
+
+        self.grid = new_grid
 
     def get_neighbors(self, coord: list[int]) -> list[int]:
         """
@@ -91,19 +99,20 @@ class GameOfLife(object):
 
         return neighbors
 
-    def dead_change(self, cell_coord: tuple[int, int], neighbor_vals: list[int]) -> None:
+    def dead_change(self, cell_coord: tuple[int, int], neighbor_vals: list[int], new_grid: list) -> None:
         """
         method for checking if dead cell should be live
         if it has 3 live neighbors it gets set to live
 
         :param cell_coord: tuple[int, int]
         :param neighbor_vals: list[int]
+        :param new_grid: list
         :return: None
         """
         if sum(neighbor_vals) == 3:
-            self.grid[cell_coord[0]][cell_coord[1]] = 1
+            new_grid[cell_coord[0]][cell_coord[1]] = 1
 
-    def live_change(self, cell_coord: tuple[int, int], neighbor_vals: list[int]) -> None:
+    def live_change(self, cell_coord: tuple[int, int], neighbor_vals: list[int], new_grid: list) -> None:
         """
         method for checking if live cell should be live or dead
         if 1 or fewer live neighbors it gets set to dead
@@ -112,6 +121,7 @@ class GameOfLife(object):
 
         :param cell_coord: tuple[int, int]
         :param neighbor_vals: list[int]
+        :param new_grid: list
         :return: None
         """
 
@@ -128,7 +138,7 @@ class GameOfLife(object):
             live_or_dead = 1
 
         # assign new value to cell coordinates
-        self.grid[cell_coord[0]][cell_coord[1]] = live_or_dead
+        new_grid[cell_coord[0]][cell_coord[1]] = live_or_dead
 
     def make_n_steps(self, n) -> None:
         """
@@ -158,16 +168,18 @@ class GameOfLife(object):
         # create x and y values to plot live cells
         y = np.array(live_coords[0])
         x = np.array(live_coords[1])
-        live_scatter = plt.scatter(x, y, color='red', s=200)
+        live_scatter = plt.scatter(x, y, color='red', s=75)
         # create x and y values to plot dead cells
         y = np.array(dead_coords[0])
         x = np.array(dead_coords[1])
-        dead_scatter = plt.scatter(x, y, color='black', s=50)
+        dead_scatter = plt.scatter(x, y, color='black', s=25)
         # invert axis so it's the same direction as print_grid
         plt.subplot().invert_yaxis()
         # change y tick marks
-        plt.yticks(np.arange(y.min(), y.max() + 1, 1))
+        plt.yticks(np.arange(y.min(), y.max() + 1, 2))
+        # set title
         plt.title(f'Game of Life -  Step {step_num}')
+        # adjust the legend so it doesn't obscure the plot
         plt.subplots_adjust(right=0.7)
         plt.legend((live_scatter, dead_scatter),
                    ('Live Cells', 'Dead Cells'),
